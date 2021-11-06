@@ -32,7 +32,7 @@ end
 
 #then we print them
 def print_header
-  puts "The students of Villains Academy"
+  puts "The students of Quantum Academy"
   puts "--------------"
 end
 
@@ -43,11 +43,32 @@ def print_names(students)
 end
 
 def print_footer(students)
-  puts "Overall, we have #{students.count} great students"
+  if students.count > 1
+    puts "Overall, we have #{students.count} great students"
+  elsif students.count == 1
+    puts "Overall, we have 1 great student"
+  else
+    puts "No students added"
+  end
 end
 
+# HARDCODED STUDENT ARRAY FOR TESTING PURPOSES
+students = [
+  {name: "Albert Einstein", country: "Germany", height: "1.70m", cohort: "November"},
+  {name: "Erwin Schrodinger", country: "Austria", height: "1.75m", cohort: "November"},
+  {name: "Paul Dirac", country: "United Kingdom", height: "1.85m", cohort: "January"},
+  {name: "Wolfgang Pauli", country: "Austria", height: "1.67m", cohort: "December"},
+  {name: "Werner Heisenberg", country: "Germany", height: "1.74m", cohort: "January"},
+  {name: "Ettore Majorana", country: "Italy", height: "1.73m", cohort: "December"},
+  {name: "Ludwig Boltzmann", country: "Austria", height: "1.80m", cohort: "March"},
+  {name: "Enrico Fermi", country: "Italy", height: "1.75m", cohort: "March"},
+  {name: "Max Planck", country: "Germany", height: "1.66m", cohort: "January"},
+  {name: "Max Born", country: "Germany", height: "1.81m", cohort: "November"},
+  {name: "Niels Bohr", country: "Denmark", height: "1.89m", cohort: "December"}
+]
+
 #nothing happens until we call the methods
-students = input_students
+# students = input_students
 print_header
 print_names(students)
 print_footer(students)
