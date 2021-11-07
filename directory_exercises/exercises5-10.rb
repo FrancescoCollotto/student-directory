@@ -4,7 +4,8 @@ def input_students
   puts "to finish just hit return twice"
   # create empty students array
   students = []
-  # get the input name 
+  # get the input name
+  # alternatives to use chomp: chop() or delete_suffix("\n")
   name = gets.chomp
   # while the name is not empty repeat this code
   while !name.empty? do
