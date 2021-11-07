@@ -10,7 +10,7 @@ def input_students
   while !name.empty? do
     # add the student name and cohort to students list
     students << {name: name, cohort: :november}
-    puts "Now we have #{students.count} students"
+    puts "Now we have #{students.count} #{students.count == 1 ? "student" : "students"}"
     # ask for user input again to set name
     name = gets.chomp
   end
@@ -42,8 +42,35 @@ def print_footer(students)
   end
 end
 
+def interactive_menu
+  students = []
+  loop do
+    # 1. print the menu and ask the user what to do
+    puts "1. Input the students"
+    puts "2. Show the students"
+    puts "9. exit"
+    # 2. read the input and save it into a variable
+    selection = gets.chomp
+    # 3. do what the user has asked
+    case selection
+    when "1"
+      students = input_students
+    when "2"
+      print_header
+      print_names(students)
+      print_footer(students)
+    when "9"
+      exit
+    else
+      puts "I don't understand what you are saying, try again"
+    end
+    # 4. repeat from step 1
+  end
+end
+
+interactive_menu
 #nothing happens until we call the methods
-students = input_students
-print_header
-print_names(students)
-print_footer(students)
+# students = input_students
+# print_header
+# print_names(students)
+# print_footer(students)
