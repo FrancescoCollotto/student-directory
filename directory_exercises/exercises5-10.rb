@@ -38,24 +38,28 @@ def print_header
 end
 
 def print_names(students)
-  students.each do |student|
-    puts "#{student[:name].center(20,'-')} #{student[:country].center(20,'-')} #{student[:height].center(20,'-')}" + " (#{student[:cohort]} cohort)".center(20,'-')
+  if !students.empty?
+    students.each do |student|
+      puts "#{student[:name].center(20,'-')} #{student[:country].center(20,'-')} #{student[:height].center(20,'-')}" + " (#{student[:cohort]} cohort)".center(20,'-')
+    end
   end
 end
 
 def print_by_cohorts(students)
-  students_cohort = {}
-  students.each do |student|
-    name = student[:name]
-    cohort = student[:cohort]
-    if students_cohort[cohort] == nil 
-      students_cohort[cohort] = []
+  if !students.empty?
+    students_cohort = {}
+    students.each do |student|
+      name = student[:name]
+      cohort = student[:cohort]
+      if students_cohort[cohort] == nil 
+        students_cohort[cohort] = []
+      end
+      students_cohort[cohort].push(name)
     end
-    students_cohort[cohort].push(name)
-  end
-  students_cohort.each do |cohort, students|
-    puts "#{cohort} cohort:"
-    students.each { |student| puts "  #{student}" }
+    students_cohort.each do |cohort, students|
+      puts "#{cohort} cohort:"
+      students.each { |student| puts "  #{student}" }
+    end
   end
 end
 
@@ -70,22 +74,22 @@ def print_footer(students)
 end
 
 # HARDCODED STUDENT ARRAY FOR TESTING PURPOSES
-students = [
-  {name: "Albert Einstein", country: "Germany", height: "1.70m", cohort: "November"},
-  {name: "Erwin Schrodinger", country: "Austria", height: "1.75m", cohort: "November"},
-  {name: "Paul Dirac", country: "United Kingdom", height: "1.85m", cohort: "January"},
-  {name: "Wolfgang Pauli", country: "Austria", height: "1.67m", cohort: "December"},
-  {name: "Werner Heisenberg", country: "Germany", height: "1.74m", cohort: "January"},
-  {name: "Ettore Majorana", country: "Italy", height: "1.73m", cohort: "December"},
-  {name: "Ludwig Boltzmann", country: "Austria", height: "1.80m", cohort: "March"},
-  {name: "Enrico Fermi", country: "Italy", height: "1.75m", cohort: "March"},
-  {name: "Max Planck", country: "Germany", height: "1.66m", cohort: "January"},
-  {name: "Max Born", country: "Germany", height: "1.81m", cohort: "November"},
-  {name: "Niels Bohr", country: "Denmark", height: "1.89m", cohort: "December"}
-]
+# students = [
+#   {name: "Albert Einstein", country: "Germany", height: "1.70m", cohort: "November"},
+#   {name: "Erwin Schrodinger", country: "Austria", height: "1.75m", cohort: "November"},
+#   {name: "Paul Dirac", country: "United Kingdom", height: "1.85m", cohort: "January"},
+#   {name: "Wolfgang Pauli", country: "Austria", height: "1.67m", cohort: "December"},
+#   {name: "Werner Heisenberg", country: "Germany", height: "1.74m", cohort: "January"},
+#   {name: "Ettore Majorana", country: "Italy", height: "1.73m", cohort: "December"},
+#   {name: "Ludwig Boltzmann", country: "Austria", height: "1.80m", cohort: "March"},
+#   {name: "Enrico Fermi", country: "Italy", height: "1.75m", cohort: "March"},
+#   {name: "Max Planck", country: "Germany", height: "1.66m", cohort: "January"},
+#   {name: "Max Born", country: "Germany", height: "1.81m", cohort: "November"},
+#   {name: "Niels Bohr", country: "Denmark", height: "1.89m", cohort: "December"}
+# ]
 
 #nothing happens until we call the methods
-# students = input_students
+students = input_students
 print_header
 print_names(students)
 print_by_cohorts(students)
