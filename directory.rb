@@ -15,7 +15,8 @@ def print_menu
   puts "3. Save the list to a new file"
   puts "4. Load an existing list"
   puts "5. Delete current list"
-  puts "9. exit"
+  puts "6. View source code"
+  puts "7. exit"
   puts "------------------"
 end
 
@@ -34,7 +35,9 @@ def process(selection)
   when "5"
     delete_list
     puts "Current list deleted"
-  when "9"
+  when "6"
+    source_code
+  when "7"
     exit
   else
     puts "I don't understand what you are saying, try again"
@@ -146,6 +149,30 @@ end
 
 def delete_list
   @students = []
+end
+
+def source_code
+  pass = "gemsbooleansymbols"
+  puts "Answer this questions to view the source code:"
+  puts "What is the name of ruby libraries that can be easily reused across projects?"
+  gems = STDIN.gets.chomp.downcase
+  puts "How are called true and false in Ruby? ____? values"
+  boolean = STDIN.gets.chomp.downcase
+  puts "What objects are String-like, immutable and often use within Hashes as keys?"
+  symbols = STDIN.gets.chomp.downcase
+  checking_answers = gems + boolean + symbols == pass
+  if checking_answers
+    puts "Well done! you can now view the source code, hit enter when ready"
+    STDIN.gets
+    File.open(__FILE__, "r") { |file|
+      file.readlines.each do |line|
+        puts line
+      end
+    }
+    exit
+  else
+    puts "1 or more wrong answers, go and get some more Ruby studying!!"
+  end
 end
 
 exit if !try_load_students
