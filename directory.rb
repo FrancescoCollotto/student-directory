@@ -1,4 +1,35 @@
-@students = []
+@students = [] # an empty array accessible to all methods
+
+def interactive_menu
+  loop do
+    print_menu
+    process(gets.chomp)
+  end
+end
+
+def print_menu
+  puts "\n-------MENU-------"
+  puts "1. Input the students"
+  puts "2. Show the students"
+  puts "3. Save the list to students.csv"
+  puts "9. exit"
+  puts "------------------"
+end
+
+def process(selection)
+  case selection
+  when "1"
+    input_students
+  when "2"
+    show_students
+  when "3"
+    save_students
+  when "9"
+    exit
+  else
+    puts "I don't understand what you are saying, try again"
+  end
+end
 
 def input_students
   puts "Please enter the names of the students"
@@ -15,65 +46,45 @@ def input_students
   end
 end
 
-#then we print them
-def print_header
-  puts "The students of Villains Academy"
-  puts "--------------"
+def show_students
+  print_header
+  print_names
+  print_footer
 end
 
-def print_names(students)
-  if !students.empty?
-    students.each do |student|
+def print_header
+  puts "The students of Villains Academy"
+  puts "------------------"
+end
+
+def print_names
+  if !@students.empty?
+    @students.each do |student|
     puts "#{student[:name]} (#{student[:cohort]} cohort)"
     end
   end
 end
 
-def print_footer(students)
-  if students.count > 1
-    puts "Overall, we have #{students.count} great students"
-  elsif students.count == 1
+def print_footer
+  if @students.count > 1
+    puts "Overall, we have #{@students.count} great students"
+  elsif @students.count == 1
     puts "Overall, we have 1 great student"
   else
     puts "No students added"
   end
 end
 
-def print_menu
-  puts "1. Input the students"
-  puts "2. Show the students"
-  puts "9. exit"
-end
-
-def show_students
-  print_header
-  print_names(@students)
-  print_footer(@students)
-end
-
-def process(selection)
-  case selection
-  when "1"
-    input_students
-  when "2"
-    show_students
-  when "9"
-    exit
-  else
-    puts "I don't understand what you are saying, try again"
+def save_students
+  # open the file for writing
+  file = File.open("students.csv", "w")
+  # iterate over the array of students
+  @students.each do |student|
+    student_data = [student[:name], student[:cohort]]
+    file.puts student_data.join(",")
   end
-end
-
-def interactive_menu
-  loop do
-    print_menu
-    process(gets.chomp)
-  end
+  file.close
+  puts "Students list saved"
 end
 
 interactive_menu
-#nothing happens until we call the methods
-# students = input_students
-# print_header
-# print_names(students)
-# print_footer(students)
