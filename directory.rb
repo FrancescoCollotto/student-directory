@@ -11,8 +11,8 @@ def print_menu
   puts "\n-------MENU-------"
   puts "1. Input the students"
   puts "2. Show the students"
-  puts "3. Save the list to students.csv"
-  puts "4. Load the list from students.csv"
+  puts "3. Save the list to a new file"
+  puts "4. Load an existing list"
   puts "9. exit"
   puts "------------------"
 end
@@ -26,7 +26,9 @@ def process(selection)
   when "3"
     save_students
   when "4"
-    load_students
+    puts "Insert file name to load"
+    filename = STDIN.gets.chomp
+    load_students(filename)
   when "9"
     exit
   else
@@ -79,8 +81,14 @@ def print_footer
 end
 
 def save_students
+  if @students.empty?
+    puts "The student list is empty. File not saved"
+    return
+  end
+  puts "Insert file name to save"
+  filename = STDIN.gets.chomp
   # open the file for writing
-  file = File.open("students.csv", "w")
+  file = File.open(filename, "w")
   # iterate over the array of students
   @students.each do |student|
     student_data = [student[:name], student[:cohort]]
@@ -90,31 +98,31 @@ def save_students
   puts "Students list saved"
 end
 
-def load_students(filename = "students.csv")
-  file = File.open(filename, "r")
-  file.readlines.each do |line|
-    name, cohort = line.chomp.split(",")
-    add_students(name, cohort)
-  end
-  file.close
-  puts "Student list loaded"
-end
-
-def try_load_students
-  filename = ARGV.first
-  return if filename.nil?
+def load_students(filename)
   if File.exist?(filename)
-    load_students(filename)
+    file = File.open(filename, "r")
+    file.readlines.each do |line|
+      name, cohort = line.chomp.split(",")
+      add_students(name, cohort)
+    end
+    file.close
     puts "Loaded #{@students.count} students from #{filename}"
   else
     puts "Sorry, #{filename} doesn't exist"
-    exit
+    return false
   end
+end
+
+def try_load_students
+  # untoggle code: || "students.csv" to load students.csv by default if no other files supplied
+  filename = ARGV.first # || "students.csv" 
+  return true if filename.nil?
+  load_students(filename)
 end
 
 def add_students(name, cohort = :november)
   @students << {name: name, cohort: cohort.to_sym}
 end
 
-try_load_students
+exit if !try_load_students
 interactive_menu
