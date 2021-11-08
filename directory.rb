@@ -42,7 +42,7 @@ def input_students
   # while the name is not empty repeat this code
   while !name.empty? do
     # add the student name and cohort to students list
-    @students << {name: name, cohort: :november}
+    add_students(name)
     puts "Now we have #{@students.count} #{@students.count == 1 ? "student" : "students"}"
     # ask for user input again to set name
     name = STDIN.gets.chomp
@@ -94,7 +94,7 @@ def load_students(filename = "students.csv")
   file = File.open(filename, "r")
   file.readlines.each do |line|
     name, cohort = line.chomp.split(",")
-    @students << {name: name, cohort: cohort.to_sym}
+    add_students(name, cohort)
   end
   file.close
   puts "Student list loaded"
@@ -110,6 +110,10 @@ def try_load_students
     puts "Sorry, #{filename} doesn't exist"
     exit
   end
+end
+
+def add_students(name, cohort = :november)
+  @students << {name: name, cohort: cohort.to_sym}
 end
 
 try_load_students
