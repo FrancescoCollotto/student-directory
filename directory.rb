@@ -81,6 +81,7 @@ def print_footer
 end
 
 def save_students
+  # check if student list is empty first
   if @students.empty?
     puts "The student list is empty. File not saved"
     return
@@ -88,24 +89,25 @@ def save_students
   puts "Insert file name to save"
   filename = STDIN.gets.chomp
   # open the file for writing
-  file = File.open(filename, "w")
-  # iterate over the array of students
-  @students.each do |student|
-    student_data = [student[:name], student[:cohort]]
-    file.puts student_data.join(",")
-  end
-  file.close
+  File.open(filename, "w") { |file|
+    # iterate over the array of students
+    @students.each do |student|
+      student_data = [student[:name], student[:cohort]]
+      file.puts student_data.join(",")
+    end
+  }
   puts "Students list saved"
 end
 
 def load_students(filename)
   if File.exist?(filename)
-    file = File.open(filename, "r")
-    file.readlines.each do |line|
-      name, cohort = line.chomp.split(",")
-      add_students(name, cohort)
-    end
-    file.close
+    @students = []
+    File.open(filename, "r") { |file|
+      file.readlines.each do |line|
+        name, cohort = line.chomp.split(",")
+        add_students(name, cohort)
+      end
+    }
     puts "Loaded #{@students.count} students from #{filename}"
   else
     puts "Sorry, #{filename} doesn't exist"
