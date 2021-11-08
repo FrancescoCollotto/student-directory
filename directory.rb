@@ -1,3 +1,4 @@
+require 'csv'
 @students = [] # an empty array accessible to all methods
 
 def interactive_menu
@@ -13,6 +14,7 @@ def print_menu
   puts "2. Show the students"
   puts "3. Save the list to a new file"
   puts "4. Load an existing list"
+  puts "5. Delete current list"
   puts "9. exit"
   puts "------------------"
 end
@@ -29,6 +31,9 @@ def process(selection)
     puts "Insert file name to load"
     filename = STDIN.gets.chomp
     load_students(filename)
+  when "5"
+    delete_list
+    puts "Current list deleted"
   when "9"
     exit
   else
@@ -88,26 +93,39 @@ def save_students
   end
   puts "Insert file name to save"
   filename = STDIN.gets.chomp
-  # open the file for writing
-  File.open(filename, "w") { |file|
-    # iterate over the array of students
+  # using CSV library
+  CSV.open(filename, "wb") do |csv|
     @students.each do |student|
       student_data = [student[:name], student[:cohort]]
-      file.puts student_data.join(",")
+      csv << student_data
     end
-  }
+  end
+  #   without using CSV library
+  # File.open(filename, "w") { |file|
+  #   # iterate over the array of students
+  #   @students.each do |student|
+  #     student_data = [student[:name], student[:cohort]]
+  #     file.puts student_data.join(",")
+  #   end
+  # }
   puts "Students list saved"
 end
 
 def load_students(filename)
   if File.exist?(filename)
-    @students = []
-    File.open(filename, "r") { |file|
-      file.readlines.each do |line|
-        name, cohort = line.chomp.split(",")
-        add_students(name, cohort)
-      end
-    }
+    delete_list
+    # using CSV library to read csv file
+    CSV.foreach(filename) do |row|
+      name, cohort = row
+      add_students(name, cohort)
+    end
+    #   without using CSV library
+    # File.open(filename, "r") { |file|
+    #   file.readlines.each do |line|
+    #     name, cohort = line.chomp.split(",")
+    #     add_students(name, cohort)
+    #   end
+    # }
     puts "Loaded #{@students.count} students from #{filename}"
   else
     puts "Sorry, #{filename} doesn't exist"
@@ -124,6 +142,10 @@ end
 
 def add_students(name, cohort = :november)
   @students << {name: name, cohort: cohort.to_sym}
+end
+
+def delete_list
+  @students = []
 end
 
 exit if !try_load_students
